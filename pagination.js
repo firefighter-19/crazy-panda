@@ -30,7 +30,7 @@ const pagination = (data) => {
 	const paginationCount = Math.ceil(data.length / elOnPage);
 
 	const liItems = [];
-	const sorted = [];
+	let sorted = [];
 
 	for (let i = 1; i <= paginationCount; i++) {
 		let li = document.createElement('li');
@@ -48,8 +48,9 @@ const pagination = (data) => {
 	}
 
 	sortDiv.addEventListener('click', () => {
-		console.log(sorted.sort(sortDesc));
-		console.log(sorted)
+		sorted.sort(sortDesc);
+		table.innerHTML = '';
+		iterateData(sorted);
 	});
 
 	const iterateData = (list) => {
@@ -62,7 +63,7 @@ const pagination = (data) => {
 
 	window.addEventListener('load', () => {
 		let list = data.slice(0, 5);
-		sorted.push(list)
+		sorted = list;
 		iterateData(list)
 
 		liItems[0].classList.add('active');
@@ -82,8 +83,7 @@ const pagination = (data) => {
 
 			let list = data.slice(start, end);
 
-			sorted.push(list);
-			sorted.splice(0, 1);
+			sorted = list;
 
 			table.innerHTML = '';
 
