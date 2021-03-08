@@ -25,11 +25,9 @@
 	justify-content: center;
 	padding: 5px;
 }
-.pagination__box {
-	display: flex;	
-}
 .pagination__list {
 	display: flex;	
+	padding: 0;
 }
 .pagination__items {
 	display: flex;
