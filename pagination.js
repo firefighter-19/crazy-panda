@@ -49,6 +49,7 @@ const pagination = (data) => {
 
 	sortDiv.addEventListener('click', () => {
 		console.log(sorted.sort(sortDesc));
+		console.log(sorted)
 	});
 
 	const iterateData = (list) => {
