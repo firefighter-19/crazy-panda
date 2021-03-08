@@ -25,12 +25,12 @@ const pagination = (data) => {
 	const table = document.querySelector('table');
 	const sortDiv = document.querySelector('.sort__section');
 	const ul = document.querySelector('.pagination__list');
+	const p = document.querySelector('p');
 
 	const elOnPage = 5; // сделать возможность выбирать количество элементов пользователю (5, 10, 15, 20)
 	const paginationCount = Math.ceil(data.length / elOnPage);
 
 	const liItems = [];
-	let sorted = [];
 
 	for (let i = 1; i <= paginationCount; i++) {
 		let li = document.createElement('li');
@@ -40,17 +40,33 @@ const pagination = (data) => {
 		liItems.push(li);
 	}
 
-	ul.addEventListener('click', e => showData(e));
+	ul.addEventListener('click', e => {
+		showData(e);
+		sortDiv.classList.remove('active');
+	});
 
 	const sortDesc = (a, b) => {
 		if (a.salary < b.salary) return 1;
 		if (a.salary > b.salary) return -1;
 	}
 
+
+	let listItems;
+
 	sortDiv.addEventListener('click', () => {
-		sorted.sort(sortDesc);
 		table.innerHTML = '';
-		iterateData(sorted);
+		if (!sortDiv.classList.contains('active')) {
+			let sorted = [];
+			Object.assign(sorted, listItems);
+			sorted.sort(sortDesc);
+			sortDiv.classList.add('active');
+			iterateData(sorted);
+			p.innerHTML = 'Unsort';
+		} else {
+			sortDiv.classList.remove('active');
+			iterateData(listItems);
+			p.innerHTML = 'Sort';
+		}
 	});
 
 	const iterateData = (list) => {
@@ -63,7 +79,7 @@ const pagination = (data) => {
 
 	window.addEventListener('load', () => {
 		let list = data.slice(0, 5);
-		sorted = list;
+		listItems = list;
 		iterateData(list)
 
 		liItems[0].classList.add('active');
@@ -83,7 +99,7 @@ const pagination = (data) => {
 
 			let list = data.slice(start, end);
 
-			sorted = list;
+			listItems = list;
 
 			table.innerHTML = '';
 
