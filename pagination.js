@@ -1,4 +1,4 @@
-let data = [
+const data = [
 	{ name: 'name1', surname: 'surname1', age: '35', salary: 5000 },
 	{ name: 'name2', surname: 'surname2', age: '34', salary: 5050 },
 	{ name: 'name3', surname: 'surname3', age: '33', salary: 5500 },
@@ -30,6 +30,8 @@ const pagination = (data) => {
 	const paginationCount = Math.ceil(data.length / elOnPage);
 
 	const liItems = [];
+	const sorted = [];
+
 	for (let i = 1; i <= paginationCount; i++) {
 		let li = document.createElement('li');
 		li.classList.add('pagination__items');
@@ -40,13 +42,28 @@ const pagination = (data) => {
 
 	ul.addEventListener('click', e => showData(e));
 
-	window.addEventListener('load', () => {
-		let list = data.slice(0, 5);
+	const sortDesc = (a, b) => {
+		if (a.salary < b.salary) return 1;
+		if (a.salary > b.salary) return -1;
+	}
+
+	sortDiv.addEventListener('click', () => {
+		console.log(sorted.sort(sortDesc));
+	});
+
+	const iterateData = (list) => {
 		for (let item of list) {
 			let tr = document.createElement('tr');
 			table.append(tr);
 			createElement(item, tr);
 		}
+	}
+
+	window.addEventListener('load', () => {
+		let list = data.slice(0, 5);
+		sorted.push(list)
+		iterateData(list)
+
 		liItems[0].classList.add('active');
 	});
 
@@ -63,16 +80,13 @@ const pagination = (data) => {
 			e.target.classList.add('active');
 
 			let list = data.slice(start, end);
+
+			sorted.push(list);
+			sorted.splice(0, 1);
+
 			table.innerHTML = '';
-			for (let item of list) {
-				let tbody = document.createElement('tbody');
-				let button = document.createElement('button');
-				let tr = document.createElement('tr');
-				table.append(tbody);
-				tbody.append(button);
-				button.append(tr);
-				createElement(item, tr);
-			}
+
+			iterateData(list)
 		} else {
 			console.log('error')
 		}
